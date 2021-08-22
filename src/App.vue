@@ -1,26 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ATM />
+  <ATMForCustomer />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ATM from "./components/ATM.vue";
+import ATMForCustomer from "./components/ATMForCustomer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    ATM,
+    ATMForCustomer,
+  },
+};
 </script>
 
 <style>
 #app {
+  display: flex;
+  justify-content: space-evenly;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#app > * {
+  padding: 25px;
 }
 </style>
