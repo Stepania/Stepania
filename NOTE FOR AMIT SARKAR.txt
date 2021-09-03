@@ -1,0 +1,14 @@
+Hello Amit,have a look on mu Iteration 2 please. Any comments or advise would be very appreciated.
+Thank you very much
+
+My goal was
+•	Create server instead of static page and connect it to my vending machine.
+•	Create a customer part of vending machine 
+•	Start  styles for a customer and a manager part 
+
+
+For my next Iteration my plan is make vending machine for customer and
+vending machine for a manager interact with each other.(I mean when manager add a product -it goes into customer part)
+I am missing some methods for making a purchase and giving a change. 
+Add some design,images
+This is the main task for me now. 

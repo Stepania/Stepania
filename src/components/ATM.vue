@@ -10,14 +10,19 @@
       <div id="input">
         <input id="name" v-model="newName" placeholder="product" />
         <input id="price" v-model="newPrice" placeholder="price" />
-        <input id="add" type="button" value="add" v-on:click="addProduct" />
+        <input
+          id="add"
+          type="button"
+          value="add"
+          v-on:click="$emit('add-product', $event, newName, newPrice)"
+        />
         <br /><br />
       </div>
-      <output id="outputProduct" v-if="hasProduct">
+      <output id="outputProduct" v-if="products.length > 0">
         <ul>
-          <li v-for="product in getProducts()" :key="product.name">
-            One {{ product.name }} which cost is ${{ product.price }} has been
-            added
+          <li>
+            One {{ lastProduct.name }} which cost is ${{ lastProduct.price }}
+            has been added
           </li>
         </ul>
       </output>
@@ -29,12 +34,17 @@
       <div id="inputCoin">
         <input id="value" v-model="newValue" placeholder="value" />
         <input id="quantity" v-model="newQuantity" placeholder="quantity" />
-        <input id="insert" type="button" value="insert" v-on:click="addCoin" />
+        <input
+          id="insert"
+          type="button"
+          value="insert"
+          v-on:click="$emit('add-coin', $event, newValue, newQuantity)"
+        />
         <br /><br />
       </div>
-      <output id="outputCoin" v-if="hasCoin">
+      <output id="outputCoin" v-if="coins.length > 0">
         <ul>
-          <li v-for="coin in getCoins()" :key="coin.value">
+          <li v-for="coin in coins" :key="coin.value">
             {{ coin.quantity }} coin(s) of ${{ coin.value }} has been inserted
           </li>
         </ul>
@@ -44,43 +54,23 @@
 </template>
 
 <script>
-import VendingMachine from "../models/VendingMachine";
 export default {
   name: "ATM",
+  props: {
+    coins: Array,
+    products: Array,
+  },
   data: function() {
     return {
-      newName: "",
-      newPrice: 0,
-      hasProduct: false,
       newValue: "",
       newQuantity: "",
-      hasCoin: false,
-      vendingMachine: new VendingMachine(),
+      newName: "",
+      newPrice: 0,
     };
   },
-  methods: {
-    addProduct: function() {
-      this.vendingMachine.addProduct(this.newName, Number(this.newPrice));
-      this.hasProduct = true;
-      this.newName = "";
-      this.newPrice = "";
-    },
-    getProducts: function() {
-      return this.vendingMachine.allMyProducts;
-    },
-
-    addCoin: function() {
-      this.vendingMachine.addCoin(
-        Number(this.newQuantity),
-        Number(this.newValue)
-      );
-      this.hasCoin = true;
-      this.newValue = "";
-      this.newQuantity = "";
-    },
-    getCoins: function() {
-      console.log("asdfasdf");
-      return this.vendingMachine.allMyCoins;
+  computed: {
+    lastProduct: function() {
+      return this.products[this.products.length - 1];
     },
   },
 };
@@ -91,7 +81,7 @@ export default {
   background-color: lightblue;
 }
 h3 {
-  margin: 40px 0 0;
+  margin: 80px 0 0;
 }
 ul {
   list-style-type: none;

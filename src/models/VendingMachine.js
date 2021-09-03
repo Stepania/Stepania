@@ -70,6 +70,13 @@ export default class VendingMachine {
     this.name = newName;
     this.price = newPrice;
   }
+  removeProduct(name) {
+    let indexProduct = this.allMyProducts.findIndex((p) => p.name === name);
+    if (indexProduct === -1) {
+      return;
+    }
+    this.allMyProducts.splice(indexProduct, 1);
+  }
   countOfProducts() {
     return this.allMyProducts.length;
   }
