@@ -28,6 +28,34 @@
         height="100"
       />
     </div>
+
+    <section id="Coin">
+      <div id="headerCoin">
+        <h3>Insert coin</h3>
+      </div>
+      <div id="inputCoin">
+        <input id="value" v-model="newValue" placeholder="value" />
+        <input id="quantity" v-model="newQuantity" placeholder="quantity" />
+        <input
+          id="insert"
+          type="button"
+          value="insert"
+          v-on:click="
+            $emit('add-coin-buffer', $event, coins, newValue, newQuantity)
+          "
+        />
+        <br /><br />
+      </div>
+      <!-- TODO: fix coins as object(not array) -->
+      <output id="outputCoin" v-if="coins.length > 0 && false">
+        <ul>
+          <li v-for="coin in coins" :key="coin.value">
+            {{ coin.quantity }} coin(s) of ${{ coin.value }} has been inserted
+          </li>
+        </ul>
+      </output>
+      {{ coins }}
+    </section>
   </div>
 </template>
 
@@ -35,7 +63,7 @@
 export default {
   name: "ATMForCustomer",
   props: {
-    coins: Array,
+    coins: Object,
     products: Array,
   },
 };

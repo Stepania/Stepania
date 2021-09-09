@@ -38,11 +38,13 @@
           id="insert"
           type="button"
           value="insert"
-          v-on:click="$emit('add-coin', $event, newValue, newQuantity)"
+          v-on:click="$emit('add-coin', $event, coins, newValue, newQuantity)"
         />
         <br /><br />
       </div>
-      <output id="outputCoin" v-if="coins.length > 0">
+      <!-- TODO: hidden because coins is object - fetch lastest inserted coin instead -->
+      {{ coins }}
+      <output id="outputCoin" v-if="hasCoins && false">
         <ul>
           <li v-for="coin in coins" :key="coin.value">
             {{ coin.quantity }} coin(s) of ${{ coin.value }} has been inserted
@@ -57,7 +59,7 @@
 export default {
   name: "ATM",
   props: {
-    coins: Array,
+    coins: Object,
     products: Array,
   },
   data: function() {
@@ -71,6 +73,12 @@ export default {
   computed: {
     lastProduct: function() {
       return this.products[this.products.length - 1];
+    },
+    lastCoin: function() {
+      return this.coins;
+    },
+    hasCoins: function() {
+      return Object.keys(this.coins).length > 0;
     },
   },
 };
