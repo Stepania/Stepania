@@ -8,6 +8,7 @@
         <button
           class="keys"
           v-on:click="$emit('select-product', $event, product)"
+          :disabled="product.quantity < 1"
         >
           {{ product.name }}
         </button>

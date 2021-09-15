@@ -5,8 +5,9 @@
     v-bind:coins="this.vendingMachine.allMyCoins"
     v-bind:products="this.vendingMachine.allMyProducts"
   />
+
   <ATMForCustomer
-    v-on:select-product="buyProduct"
+    v-on:select-product="purchaseProduct"
     v-on:add-coin-buffer="addCoin"
     v-bind:coins="this.vendingMachine.bufferCoins"
     v-bind:products="this.vendingMachine.allMyProducts"
@@ -31,12 +32,21 @@ export default {
       if (this.vendingMachine.allMyProducts.length > 5) {
         return alert("Max products allowed is 6");
       }
-
-      if (price > 0 && price !== null && name !== null) {
-        return this.vendingMachine.addProduct(name, Number(price));
+      if (price <= 0) {
+        return alert("Insert proper value");
       }
-      alert("Insert proper value");
+      if (price === null) {
+        return alert("Insert proper value");
+      }
+      if (name === null) {
+        return alert("Insert proper value");
+      }
+      if (name == "") {
+        return alert("Insert proper value");
+      }
+      this.vendingMachine.addProduct(name, Number(price));
     },
+
     addCoin: function(event, storage, value, quantity) {
       if (value < 0) {
         return alert("Insert proper coin");
@@ -57,8 +67,8 @@ export default {
       );
     },
 
-    buyProduct: function(event, product) {
-      this.vendingMachine.removeProduct(product.name);
+    purchaseProduct: function(event, product) {
+      this.vendingMachine.purchaseProduct(product.name);
       alert(`Customer bought ${product.name}.`);
     },
   },

@@ -1,18 +1,18 @@
-import Coin from "./Coin";
-import Product from "./Product";
+import CoinRecord from "./CoinRecord";
+import ProductRecord from "./ProductRecord";
 
 export default class VendingMachine {
   constructor(name, location) {
     this.name = name;
     this.location = location;
-    this.allMyCoins = {};
+    this.allMyCoins = []; // new Array<any>()
     this.allMyProducts = [];
-    this.bufferCoins = {};
+    this.bufferCoins = [];
   }
 
   calculateTotalValue(storage) {
-    return Object.entries(storage)
-      .map((c) => +c[0] * c[1])
+    return storage
+      .map((c) => parseInt(c.value) * c.quantity)
       .reduce((total, tempTotal) => total + tempTotal, 0);
   }
 
@@ -24,67 +24,48 @@ export default class VendingMachine {
     if (product.price > this.calculateTotalValue(this.bufferCoins)) {
       return;
     }
-    console.log(this.calculateTotalValue(this.bufferCoins));
+    let change = this.calculateTotalValue(this.bufferCoins) - product.price;
+    this.bufferCoins = [];
+    this.addCoin(this.bufferCoins, change, 1);
+    this.addCoin(this.allMyCoins, product.price, 1);
 
-    // // Test for invalid coin
-    // if (purchase % 10 !== 0) {
-    //   return `${purchase} is invalid coin input, please insert multiple of ${aCoin.value} only`;
-    // }
+    this.removeProduct(name);
 
-    // let inputCoinNumber = purchase / coin.value;
-    // // Test for small amount
-    // if (purchase < product.price) {
-    //   result += `<tr>
-    //     <td class = "dispenser">${inputCoinNumber} X ${aCoin.value} Cent Coins Dispensed</td>
-    //     <td class="dispenser">Insert ${product.price} Cents to Purchase Product </td>
-    //   <tr></table>`;
-    //   return result;
-    // }
-
-    // let change = purchase - product.price;
-    // let changeCoinNumber = change / aCoin.value;
-
-    // result += `<tr><td class = "dispenser">${changeCoinNumber} X ${aCoin.value} Cent Coins Dispensed</td><td class="dispenser">${product.aName} Product Dispensed </td><tr></table>`;
-    // this.allMyProducts.pop();
-    // for (let coins = 0; coins < inputCoinNumber; coins++) {
-    //   this.addCoin(coin);
-    // }
-    // for (let coin = 0; coin < changeCoinNumber; coin++) {
-    //   // Check for correct value before popping
-    //   this.allMyCoins.splice(
-    //     this.allMyCoins.findIndex((coin) => coin.value === 10),
-    //     1
-    //   );
-    // }
-
-    // return result;
+    // Move buffer to all coins (map addCoin)
+    // Give change (calculate price difference, )
   }
 
-  addCoin(storage, newValue, newQantity) {
-    // const aNewCoin = new Coin(newValue, newQantity);
-    // this.allMyCoins.push(aNewCoin);
-    if (Object.keys(storage).includes(`${newValue}`)) {
-      storage[newValue] += newQantity;
-    } else {
-      storage[newValue] = newQantity;
+  addCoin(storage, value, quantity) {
+    let exchangeCoinQuantity = Math.floor((value * quantity) / 10);
+    let coin = storage.find((c) => c.value === 10);
+    if (coin === undefined) {
+      let newCoin = new CoinRecord(10, exchangeCoinQuantity);
+      return storage.push(newCoin);
     }
+    coin.quantity += exchangeCoinQuantity;
   }
   countOfCoins() {
     return this.allMyCoins.length;
   }
 
-  addProduct(newName, newPrice) {
-    const aNewProduct = new Product(newName, newPrice);
-    this.allMyProducts.push(aNewProduct);
-    this.name = newName;
-    this.price = newPrice;
+  addProduct(name, price, quantity = 1) {
+    let product = this.allMyProducts.find((p) => p.name === name);
+    if (product === undefined) {
+      let newProduct = new ProductRecord(name, price, quantity);
+      return this.allMyProducts.push(newProduct);
+    }
+    product.quantity += quantity;
   }
+
   removeProduct(name) {
-    let indexProduct = this.allMyProducts.findIndex((p) => p.name === name);
-    if (indexProduct === -1) {
+    let product = this.allMyProducts.find((p) => p.name === name);
+    if (product === undefined) {
       return;
     }
-    this.allMyProducts.splice(indexProduct, 1);
+    if (product.quantity <= 0) {
+      return;
+    }
+    product.quantity -= 1;
   }
   countOfProducts() {
     return this.allMyProducts.length;
