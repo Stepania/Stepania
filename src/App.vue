@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <template>
   <ATM
     v-on:add-product="addProduct"
@@ -27,6 +28,7 @@ export default {
       vendingMachine: new VendingMachine(),
     };
   },
+  // problem with a validation of coins and price
   methods: {
     addProduct: function(event, name, price) {
       if (this.vendingMachine.allMyProducts.length > 5) {
@@ -38,10 +40,10 @@ export default {
       if (price === null) {
         return alert("Insert proper value");
       }
-      if (name === null) {
+      if (price == "") {
         return alert("Insert proper value");
       }
-      if (name == "") {
+      if (name === null) {
         return alert("Insert proper value");
       }
       this.vendingMachine.addProduct(name, Number(price));
@@ -54,6 +56,15 @@ export default {
       if (quantity < 0) {
         return alert("Insert proper coin");
       }
+
+      if (quantity == "") {
+        return alert("Insert proper quantity");
+      }
+
+      if (value == "") {
+        return alert("Insert proper value");
+      }
+
       if (value === null) {
         return alert("Insert proper coin");
       }

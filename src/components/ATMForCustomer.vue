@@ -30,6 +30,36 @@
       />
     </div>
 
+    <span id="two-dollar">
+      <img
+        src="./images/2-dollar.png"
+        alt="twoDollars"
+        width="50"
+        height="50"
+      />
+    </span>
+
+    <span id="one-dollar">
+      <img
+        src="./images/1-dollar.png"
+        alt="twoDollars"
+        width="50"
+        height="50"
+      />
+    </span>
+
+    <span id="50-cent">
+      <img src="./images/50-cent.png" alt="twoDollars" width="50" height="50" />
+    </span>
+
+    <span id="20-cent">
+      <img src="./images/20-cent.png" alt="twoDollars" width="50" height="50" />
+    </span>
+
+    <span id="10-cent">
+      <img src="./images/10-cent.png" alt="twoDollars" width="50" height="50" />
+    </span>
+
     <section id="Coin">
       <div id="headerCoin">
         <h3>Insert coin</h3>
