@@ -24,7 +24,8 @@ export default class VendingMachine {
     if (product.price > this.calculateTotalValue(this.bufferCoins)) {
       return;
     }
-    let change = this.calculateTotalValue(this.bufferCoins) - product.price;
+    let change =
+      this.calculateTotalValue(this.bufferCoins) - product.price * 10;
     this.bufferCoins = [];
     this.addCoin(this.bufferCoins, change, 1);
     this.addCoin(this.allMyCoins, product.price, 1);

@@ -19,45 +19,47 @@
         type="button"
         value="cancel"
         v-on:click="giveChange"
+        draggable="true"
+        ondragstart="drag(event)"
       />
     </div>
     <div id="money-taker">
       <img
         src="./images/TrimmedSlot.jpg"
+        ondrop="drop(event)"
+        ondragover="allowDrop(event)"
         alt="CoinTaker"
         width="100"
         height="100"
       />
     </div>
+    <!-- delete jopu -->
+    <div id="jopa" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 
-    <span id="two-dollar">
-      <img
-        src="./images/2-dollar.png"
-        alt="twoDollars"
-        width="50"
-        height="50"
-      />
+    <span id="two-dollar" draggable="true" ondragstart="drag(event)">
+      <img src="./images/2-dollar.png" width="50" height="50" />
     </span>
 
     <span id="one-dollar">
       <img
         src="./images/1-dollar.png"
-        alt="twoDollars"
+        draggable="true"
+        ondragstart="drag(event)"
         width="50"
         height="50"
       />
     </span>
 
     <span id="50-cent">
-      <img src="./images/50-cent.png" alt="twoDollars" width="50" height="50" />
+      <img src="./images/50-cent.png" width="50" height="50" />
     </span>
 
     <span id="20-cent">
-      <img src="./images/20-cent.png" alt="twoDollars" width="50" height="50" />
+      <img src="./images/20-cent.png" width="50" height="50" />
     </span>
 
     <span id="10-cent">
-      <img src="./images/10-cent.png" alt="twoDollars" width="50" height="50" />
+      <img src="./images/10-cent.png" width="50" height="50" />
     </span>
 
     <section id="Coin">
@@ -98,6 +100,21 @@ export default {
     products: Array,
   },
 };
+
+function allowDrop(ev) {
+  ev.preventDefault();
+  ev.dataTransfer.effectAllowed = "move";
+}
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+  console.log("text");
+  ev.dataTransfer.effectAllowed = "move";
+}
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
 </script>
 
 <style scoped>
@@ -126,5 +143,12 @@ li {
 }
 a {
   color: #42b983;
+}
+
+#jopa {
+  width: 350px;
+  height: 70px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
 }
 </style>

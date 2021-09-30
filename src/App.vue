@@ -57,6 +57,10 @@ export default {
         return alert("Insert proper coin");
       }
 
+      if (value % 10 !== 0) {
+        return alert("Insert proper coin");
+      }
+
       if (quantity == "") {
         return alert("Insert proper quantity");
       }
