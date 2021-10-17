@@ -10,6 +10,7 @@
   <ATMForCustomer
     v-on:select-product="purchaseProduct"
     v-on:add-coin-buffer="addCoin"
+    v-on:insert="insertCoin"
     v-bind:coins="this.vendingMachine.bufferCoins"
     v-bind:products="this.vendingMachine.allMyProducts"
   />
@@ -83,8 +84,25 @@ export default {
     },
 
     purchaseProduct: function(event, product) {
-      this.vendingMachine.purchaseProduct(product.name);
-      alert(`Customer bought ${product.name}.`);
+      let startValue = this.vendingMachine.calculateTotalValue(
+        this.vendingMachine.bufferCoins
+      );
+      let changeValue = this.vendingMachine.purchaseProduct(product.name);
+      let isSuccesful = changeValue < startValue;
+      if (isSuccesful) {
+        alert(
+          `Customer bought ${product.name}. Please, take your change (${changeValue}).`
+        );
+        return;
+      }
+      alert(`Not enough money.`);
+    },
+    insertCoin: function(event, value) {
+      this.vendingMachine.addCoin(
+        this.vendingMachine.bufferCoins,
+        Number(value),
+        1
+      );
     },
   },
 
@@ -103,9 +121,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  /* background-color: #195514; */
+  margin-top: 30px;
 }
 #app > * {
-  padding: 25px;
+  padding: 50px;
 }
 </style>

@@ -4,66 +4,94 @@
       <h1>Vending Machine for Customer</h1>
     </header>
     <div id="input-panel">
-      <span v-for="product in products" :key="product.name">
-        <button
-          class="keys"
-          v-on:click="$emit('select-product', $event, product)"
-          :disabled="product.quantity < 1"
-        >
-          {{ product.name }}
-        </button>
-      </span>
+      <button
+        v-for="product in products"
+        :key="product.name"
+        class="keys"
+        v-on:click="$emit('select-product', $event, product)"
+        :disabled="product.quantity < 1"
+      >
+        {{ product.name }}
+      </button>
+      <!-- something is wrong  -->
       <input class="keys" type="button" value="buy" v-on:click="buy" />
       <input
         class="keys"
         type="button"
         value="cancel"
         v-on:click="giveChange"
-        draggable="true"
-        ondragstart="drag(event)"
       />
     </div>
+
     <div id="money-taker">
       <img
         src="./images/TrimmedSlot.jpg"
-        ondrop="drop(event)"
-        ondragover="allowDrop(event)"
+        @drop="this.drop($event)"
+        @dragover="this.dragover($event)"
+        @dragenter="this.dragenter($event)"
         alt="CoinTaker"
         width="100"
         height="100"
       />
     </div>
-    <!-- delete jopu -->
-    <div id="jopa" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 
-    <span id="two-dollar" draggable="true" ondragstart="drag(event)">
-      <img src="./images/2-dollar.png" width="50" height="50" />
+    <audio id="myAudio">
+      <source src="coinSound.ogg" type="audio/ogg" />
+      <source src="coinSound.mp3" type="audio/mpeg" />
+    </audio>
+
+    <span id="two-dollar">
+      <img
+        src="./images/2-dollar.png"
+        draggable
+        @dragstart="drag($event, 200)"
+        width="50"
+        height="50"
+      />
     </span>
-
     <span id="one-dollar">
       <img
         src="./images/1-dollar.png"
-        draggable="true"
-        ondragstart="drag(event)"
+        draggable
+        @dragstart="drag($event, 100)"
         width="50"
         height="50"
       />
     </span>
 
     <span id="50-cent">
-      <img src="./images/50-cent.png" width="50" height="50" />
+      <img
+        src="./images/50-cent.png"
+        draggable
+        @dragstart="drag($event, 50)"
+        width="50"
+        height="50"
+      />
     </span>
 
     <span id="20-cent">
-      <img src="./images/20-cent.png" width="50" height="50" />
+      <img
+        src="./images/20-cent.png"
+        draggable
+        @dragstart="drag($event, 20)"
+        width="50"
+        height="50"
+      />
     </span>
 
     <span id="10-cent">
-      <img src="./images/10-cent.png" width="50" height="50" />
+      <img
+        src="./images/10-cent.png"
+        draggable
+        @dragstart="drag($event, 10)"
+        width="50"
+        height="50"
+      />
     </span>
+    <button onclick="playAudio()" type="button">Play Audio</button>
 
     <section id="Coin">
-      <div id="headerCoin">
+      <!-- <div id="headerCoin">
         <h3>Insert coin</h3>
       </div>
       <div id="inputCoin">
@@ -78,16 +106,16 @@
           "
         />
         <br /><br />
-      </div>
-      <!-- TODO: fix coins as object(not array) -->
-      <output id="outputCoin" v-if="coins.length > 0 && false">
+      </div> -->
+      <!-- <output id="outputCoin" v-if="coins.length > 0 && false"> -->
+      <output id="outputCoin" v-if="coins.length > 0">
         <ul>
           <li v-for="coin in coins" :key="coin.value">
-            {{ coin.quantity }} coin(s) of ${{ coin.value }} has been inserted
+            {{ coin.quantity * 10 }} cents has been inserted
           </li>
         </ul>
       </output>
-      {{ coins }}
+      <!-- {{ coins }} -->
     </section>
   </div>
 </template>
@@ -99,22 +127,30 @@ export default {
     coins: Object,
     products: Array,
   },
+  data: function() {
+    return {
+      coinValue: 0,
+    };
+  },
+  methods: {
+    drag: function(ev, value) {
+      this.coinValue = +value;
+    },
+    drop: function(ev) {
+      this.$emit("insert", ev, this.coinValue);
+      this.coinValue = 0;
+    },
+    dragover: function(ev) {
+      ev.preventDefault();
+    },
+    dragenter: function(ev) {
+      ev.preventDefault();
+    },
+    playAudio: function(ev) {
+      ev.play();
+    },
+  },
 };
-
-function allowDrop(ev) {
-  ev.preventDefault();
-  ev.dataTransfer.effectAllowed = "move";
-}
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-  console.log("text");
-  ev.dataTransfer.effectAllowed = "move";
-}
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-}
 </script>
 
 <style scoped>

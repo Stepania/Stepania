@@ -21,8 +21,8 @@
       <output id="outputProduct" v-if="products.length > 0">
         <ul>
           <li>
-            One {{ lastProduct.name }} which cost is ${{ lastProduct.price }}
-            has been added
+            One {{ lastProduct.name }} with a price of
+            {{ lastProduct.price }} cents has been added
           </li>
         </ul>
       </output>
@@ -43,11 +43,11 @@
         <br /><br />
       </div>
       <!-- TODO: hidden because coins is object - fetch lastest inserted coin instead -->
-      {{ coins }}
-      <output id="outputCoin" v-if="hasCoins && false">
+      <!-- {{ coins }} -->
+      <output id="outputCoin" v-if="coins.length > 0">
         <ul>
           <li v-for="coin in coins" :key="coin.value">
-            {{ coin.quantity }} coin(s) of ${{ coin.value }} has been inserted
+            {{ coin.quantity * 10 }} cents has been inserted
           </li>
         </ul>
       </output>
