@@ -24,11 +24,11 @@ describe("Vending machine instance", () => {
   it("removeProduct() should remove product.", () => {
     // arrange
     let vm = new VendingMachine();
-    vm.addProduct("cola", 10, 2);
+    vm.addProduct("cola", 10, 3);
     // act
-    vm.removeProduct("cola");
-    let cola = vm.allMyProducts.find((p) => p.name == "cola");
+    vm.removeProduct("cola", 10);
+    let cola = vm.findProduct("cola", 10);
     // assert
-    assert.equal(cola.quantity, 1);
+    assert.equal(cola?.quantity, 2);
   });
 });

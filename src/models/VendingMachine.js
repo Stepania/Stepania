@@ -16,23 +16,26 @@ export default class VendingMachine {
       .reduce((total, tempTotal) => total + tempTotal, 0);
   }
 
-  purchaseProduct(name) {
-    let product = this.allMyProducts.find((p) => p.name === name);
+  purchaseProduct(name, price) {
+    let product = this.findProduct(name, price);
     if (product === undefined) {
-      return calculateTotalValue(this.bufferCoins);
+      return this.calculateTotalValue(this.bufferCoins);
     }
     if (product.price > this.calculateTotalValue(this.bufferCoins)) {
-      return calculateTotalValue(this.bufferCoins);
+      return this.calculateTotalValue(this.bufferCoins);
     }
+    //create if statement for checking if VM will be able to give a change before customer can buy product
+    //make a button buy and cancel - useful
+
     let change = this.calculateTotalValue(this.bufferCoins) - product.price;
-    // this.calculateTotalValue(this.bufferCoins) - product.price * 10;
+
     this.bufferCoins = [];
     this.addCoin(this.bufferCoins, change, 1);
     this.addCoin(this.allMyCoins, product.price, 1);
 
     // Move buffer to all coins (map addCoin)
     // Give change (calculate price difference, )
-    return this.removeProduct(name);
+    return this.removeProduct(name, price);
   }
 
   addCoin(storage, value, quantity) {
@@ -52,7 +55,7 @@ export default class VendingMachine {
     if (quantity < 0) {
       throw `VendingMachine.addProduct does not allow negative quantity. Entered: ${quantity}.`;
     }
-    let product = this.allMyProducts.find((p) => p.name === name);
+    let product = this.findProduct(name, price);
     if (product === undefined) {
       let newProduct = new ProductRecord(name, price, quantity);
       return this.allMyProducts.push(newProduct);
@@ -60,8 +63,8 @@ export default class VendingMachine {
     product.quantity += quantity;
   }
 
-  removeProduct(name) {
-    let product = this.allMyProducts.find((p) => p.name === name);
+  removeProduct(name, price) {
+    let product = this.findProduct(name, price);
     if (product === undefined) {
       return this.calculateTotalValue(this.bufferCoins);
     }
@@ -70,7 +73,7 @@ export default class VendingMachine {
     }
     product.quantity -= 1;
     if (product.quantity < 1) {
-      let productIndex = this.allMyProducts.findIndex((p) => p.name === name);
+      let productIndex = this.findProductIndex(name, price);
       this.allMyProducts.splice(productIndex, 1);
     }
     let newBufferCoins = this.calculateTotalValue(this.bufferCoins);
@@ -79,5 +82,17 @@ export default class VendingMachine {
   }
   countOfProducts() {
     return this.allMyProducts.length;
+  }
+
+  findProduct(name, price) {
+    return this.allMyProducts.find(
+      (p) => p.label === ProductRecord.getLabel(name, price)
+    );
+  }
+
+  findProductIndex(name, price) {
+    return this.allMyProducts.findIndex(
+      (p) => p.label === ProductRecord.getLabel(name, price)
+    );
   }
 }

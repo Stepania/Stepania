@@ -6,12 +6,12 @@
     <div id="input-panel">
       <button
         v-for="product in products"
-        :key="product.name"
+        :key="product.label"
         class="keys"
         v-on:click="$emit('select-product', $event, product)"
         :disabled="product.quantity < 1"
       >
-        {{ product.name }}
+        {{ product.label }}
       </button>
       <!-- something is wrong  -->
       <input class="keys" type="button" value="buy" v-on:click="buy" />
@@ -40,54 +40,57 @@
       <source src="coinSound.mp3" type="audio/mpeg" />
     </audio>
 
-    <span id="two-dollar">
-      <img
-        src="./images/2-dollar.png"
-        draggable
-        @dragstart="drag($event, 200)"
-        width="50"
-        height="50"
-      />
-    </span>
-    <span id="one-dollar">
-      <img
-        src="./images/1-dollar.png"
-        draggable
-        @dragstart="drag($event, 100)"
-        width="50"
-        height="50"
-      />
-    </span>
+    <div id="coins-drag">
+      <span id="two-dollar">
+        <img
+          src="./images/2-dollar.png"
+          draggable
+          @dragstart="drag($event, 200)"
+          width="50"
+          height="50"
+        />
+      </span>
+      <span id="one-dollar">
+        <img
+          src="./images/1-dollar.png"
+          draggable
+          @dragstart="drag($event, 100)"
+          width="50"
+          height="50"
+        />
+      </span>
 
-    <span id="50-cent">
-      <img
-        src="./images/50-cent.png"
-        draggable
-        @dragstart="drag($event, 50)"
-        width="50"
-        height="50"
-      />
-    </span>
+      <span id="50-cent">
+        <img
+          src="./images/50-cent.png"
+          draggable
+          @dragstart="drag($event, 50)"
+          width="50"
+          height="50"
+        />
+      </span>
 
-    <span id="20-cent">
-      <img
-        src="./images/20-cent.png"
-        draggable
-        @dragstart="drag($event, 20)"
-        width="50"
-        height="50"
-      />
-    </span>
+      <span id="20-cent">
+        <img
+          src="./images/20-cent.png"
+          draggable
+          @dragstart="drag($event, 20)"
+          width="50"
+          height="50"
+        />
+      </span>
 
-    <span id="10-cent">
-      <img
-        src="./images/10-cent.png"
-        draggable
-        @dragstart="drag($event, 10)"
-        width="50"
-        height="50"
-      />
-    </span>
+      <span id="10-cent">
+        <img
+          src="./images/10-cent.png"
+          draggable
+          @dragstart="drag($event, 10)"
+          width="50"
+          height="50"
+        />
+      </span>
+    </div>
+
     <button onclick="playAudio()" type="button">Play Audio</button>
 
     <section id="Coin">
@@ -177,14 +180,18 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
+/* #coins-drag {
+  width: 300px;
+  height: 60px;
+  padding: 30px;
+} */
+
 a {
   color: #42b983;
 }
-
-#jopa {
-  width: 350px;
-  height: 70px;
-  padding: 10px;
-  border: 1px solid #aaaaaa;
-}
+/* #money-taker {
+  width: 300px;
+  height: 60px;
+  padding: 20px;
+} */
 </style>

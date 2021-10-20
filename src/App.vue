@@ -87,7 +87,10 @@ export default {
       let startValue = this.vendingMachine.calculateTotalValue(
         this.vendingMachine.bufferCoins
       );
-      let changeValue = this.vendingMachine.purchaseProduct(product.name);
+      let changeValue = this.vendingMachine.purchaseProduct(
+        product.name,
+        product.price
+      );
       let isSuccesful = changeValue < startValue;
       if (isSuccesful) {
         alert(
