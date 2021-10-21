@@ -5,6 +5,7 @@ export default class VendingMachine {
   constructor(name, location) {
     this.name = name;
     this.location = location;
+    this.lastPickedProduct = null; // ProductRecord
     this.allMyCoins = [];
     this.allMyProducts = [];
     this.bufferCoins = [];
@@ -17,25 +18,33 @@ export default class VendingMachine {
   }
 
   purchaseProduct(name, price) {
-    let product = this.findProduct(name, price);
-    if (product === undefined) {
+    this.selectProduct(name, price);
+    this.purchaseSelectedProduct();
+  }
+  purchaseSelectedProduct() {
+    if (this.hasNoSelectedProduct()) {
       return this.calculateTotalValue(this.bufferCoins);
     }
-    if (product.price > this.calculateTotalValue(this.bufferCoins)) {
+    if (
+      this.lastPickedProduct.price > this.calculateTotalValue(this.bufferCoins)
+    ) {
       return this.calculateTotalValue(this.bufferCoins);
     }
     //create if statement for checking if VM will be able to give a change before customer can buy product
     //make a button buy and cancel - useful
 
-    let change = this.calculateTotalValue(this.bufferCoins) - product.price;
+    let change =
+      this.calculateTotalValue(this.bufferCoins) - this.lastPickedProduct.price;
 
     this.bufferCoins = [];
+    console.log(this.bufferCoins);
     this.addCoin(this.bufferCoins, change, 1);
-    this.addCoin(this.allMyCoins, product.price, 1);
+    console.log(this.bufferCoins);
+    this.addCoin(this.allMyCoins, this.lastPickedProduct.price, 1);
 
     // Move buffer to all coins (map addCoin)
     // Give change (calculate price difference, )
-    return this.removeProduct(name, price);
+    return this.removeSelectedProduct();
   }
 
   addCoin(storage, value, quantity) {
@@ -64,22 +73,43 @@ export default class VendingMachine {
   }
 
   removeProduct(name, price) {
-    let product = this.findProduct(name, price);
-    if (product === undefined) {
+    this.selectProduct(name, price);
+    this.removeSelectedProduct();
+  }
+  removeSelectedProduct() {
+    if (this.hasNoSelectedProduct()) {
       return this.calculateTotalValue(this.bufferCoins);
     }
-    if (product.quantity <= 0) {
+    if (this.lastPickedProduct.quantity <= 0) {
       return this.calculateTotalValue(this.bufferCoins);
     }
-    product.quantity -= 1;
-    if (product.quantity < 1) {
-      let productIndex = this.findProductIndex(name, price);
+    this.lastPickedProduct.quantity -= 1;
+    if (this.lastPickedProduct.quantity < 1) {
+      let productIndex = this.findProductIndex(
+        this.lastPickedProduct.name,
+        this.lastPickedProduct.price
+      );
       this.allMyProducts.splice(productIndex, 1);
     }
     let newBufferCoins = this.calculateTotalValue(this.bufferCoins);
-    this.bufferCoins = [];
+    if (newBufferCoins <= 0) {
+      this.bufferCoins = [];
+    }
+    this.lastPickedProduct = null;
     return newBufferCoins;
   }
+
+  selectProduct(name, price) {
+    this.lastPickedProduct = this.findProduct(name, price);
+    return this.lastPickedProduct;
+  }
+
+  hasNoSelectedProduct() {
+    return (
+      this.lastPickedProduct == null || this.lastPickedProduct === undefined
+    );
+  }
+
   countOfProducts() {
     return this.allMyProducts.length;
   }

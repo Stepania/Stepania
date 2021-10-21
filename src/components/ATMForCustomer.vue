@@ -14,12 +14,17 @@
         {{ product.label }}
       </button>
       <!-- something is wrong  -->
-      <input class="keys" type="button" value="buy" v-on:click="buy" />
+      <input
+        class="keys"
+        type="button"
+        value="buy"
+        v-on:click="$emit('purchase-selected-product', $event)"
+      />
       <input
         class="keys"
         type="button"
         value="cancel"
-        v-on:click="giveChange"
+        v-on:click="$emit('give-change', $event)"
       />
     </div>
 

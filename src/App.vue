@@ -8,7 +8,9 @@
   />
 
   <ATMForCustomer
-    v-on:select-product="purchaseProduct"
+    v-on:select-product="selectProduct"
+    v-on:purchase-selected-product="purchaseSelectedProduct"
+    v-on:give-change="giveChange"
     v-on:add-coin-buffer="addCoin"
     v-on:insert="insertCoin"
     v-bind:coins="this.vendingMachine.bufferCoins"
@@ -83,18 +85,28 @@ export default {
       );
     },
 
-    purchaseProduct: function(event, product) {
+    selectProduct: function(event, product) {
+      this.vendingMachine.selectProduct(product.name, product.price);
+      alert(
+        `Customer selected ${this.vendingMachine.lastPickedProduct.label}.`
+      );
+    },
+    purchaseSelectedProduct: function(event) {
+      let operationProduct = this.vendingMachine.lastPickedProduct;
+      if (this.vendingMachine.hasNoSelectedProduct()) {
+        return alert("Choose some product first.");
+      }
       let startValue = this.vendingMachine.calculateTotalValue(
         this.vendingMachine.bufferCoins
       );
-      let changeValue = this.vendingMachine.purchaseProduct(
-        product.name,
-        product.price
+      this.vendingMachine.purchaseSelectedProduct();
+      let changeValue = this.vendingMachine.calculateTotalValue(
+        this.vendingMachine.bufferCoins
       );
       let isSuccesful = changeValue < startValue;
       if (isSuccesful) {
         alert(
-          `Customer bought ${product.name}. Please, take your change (${changeValue}).`
+          `Customer bought ${operationProduct.label}. Please, take your change (${changeValue}).`
         );
         return;
       }
@@ -106,6 +118,13 @@ export default {
         Number(value),
         1
       );
+    },
+    giveChange: function(event) {
+      let returnedAmount = this.vendingMachine.calculateTotalValue(
+        this.vendingMachine.bufferCoins
+      );
+      this.vendingMachine.bufferCoins = [];
+      alert(`Take your ${returnedAmount} change.`);
     },
   },
 
