@@ -41,8 +41,8 @@
     </div>
 
     <audio id="myAudio">
-      <source src="coinSound.ogg" type="audio/ogg" />
-      <source src="coinSound.mp3" type="audio/mpeg" />
+      <!-- <source src="./sounds/coinSound.ogg" type="audio/ogg" /> -->
+      <source src="./sounds/coinSound.mp3" type="audio/mpeg" />
     </audio>
 
     <div id="coins-drag">
