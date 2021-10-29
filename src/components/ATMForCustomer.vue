@@ -13,18 +13,18 @@
       >
         {{ product.label }}
       </button>
-      <!-- something is wrong  -->
+
       <input
         class="keys"
         type="button"
         value="buy"
-        v-on:click="$emit('purchase-selected-product', $event)"
+        @click="$emit('purchase-selected-product', $event)"
       />
       <input
         class="keys"
         type="button"
         value="cancel"
-        v-on:click="$emit('give-change', $event)"
+        @click="$emit('give-change', $event)"
       />
     </div>
 
@@ -39,11 +39,6 @@
         height="100"
       />
     </div>
-
-    <audio id="myAudio">
-      <!-- <source src="./sounds/coinSound.ogg" type="audio/ogg" /> -->
-      <source src="./sounds/coinSound.mp3" type="audio/mpeg" />
-    </audio>
 
     <div id="coins-drag">
       <span id="two-dollar">
@@ -96,8 +91,6 @@
       </span>
     </div>
 
-    <button onclick="playAudio()" type="button">Play Audio</button>
-
     <section id="Coin">
       <!-- <div id="headerCoin">
         <h3>Insert coin</h3>
@@ -119,7 +112,7 @@
       <output id="outputCoin" v-if="coins.length > 0">
         <ul>
           <li v-for="coin in coins" :key="coin.value">
-            {{ coin.quantity * 10 }} cents has been inserted
+            Your balance is {{ coin.quantity * 10 }} cents
           </li>
         </ul>
       </output>
@@ -129,6 +122,8 @@
 </template>
 
 <script>
+import sound from "./sounds/coinSound.mp3";
+
 export default {
   name: "ATMForCustomer",
   props: {
@@ -145,6 +140,7 @@ export default {
       this.coinValue = +value;
     },
     drop: function(ev) {
+      new Audio(sound).play();
       this.$emit("insert", ev, this.coinValue);
       this.coinValue = 0;
     },
@@ -154,8 +150,8 @@ export default {
     dragenter: function(ev) {
       ev.preventDefault();
     },
-    playAudio: function(ev) {
-      ev.play();
+    playAudio: function() {
+      new Audio(sound).play();
     },
   },
 };
