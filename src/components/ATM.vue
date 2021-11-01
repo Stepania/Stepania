@@ -11,6 +11,7 @@
         <input id="name" v-model="newName" placeholder="product" />
         <input id="price" v-model="newPrice" placeholder="price" />
         <input
+          class="button"
           id="add"
           type="button"
           value="add"
@@ -35,6 +36,7 @@
         <input id="value" v-model="newValue" placeholder="value" />
         <input id="quantity" v-model="newQuantity" placeholder="quantity" />
         <input
+          class="button"
           id="insert"
           type="button"
           value="insert"
@@ -47,7 +49,7 @@
       <output id="outputCoin" v-if="coins.length > 0">
         <ul>
           <li v-for="coin in coins" :key="coin.value">
-            {{ coin.quantity * 10 }} cents has been inserted
+            Vending machine balance is {{ coin.quantity * 10 }} cents
           </li>
         </ul>
       </output>
@@ -87,9 +89,11 @@ export default {
 <style scoped>
 #app-manager {
   background-color: lightblue;
+  border: 15px rgba(89, 0, 255, 0.562) solid;
 }
 h3 {
-  margin: 80px 0 0;
+  margin: 110px 0 0;
+  padding: 3px;
 }
 ul {
   list-style-type: none;
@@ -101,5 +105,17 @@ li {
 }
 a {
   color: #42b983;
+}
+.button[type="button"] {
+  margin-top: 5px;
+  padding: 10px 15px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  margin-left: 1em;
+}
+.button:hover {
+  background: red;
+  color: #fff;
 }
 </style>

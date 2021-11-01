@@ -49,6 +49,9 @@ export default {
       if (name === null) {
         return alert("Insert proper value");
       }
+      if (name.length > 8) {
+        return alert("Could you shorten the name please");
+      }
       this.vendingMachine.addProduct(name, Number(price));
     },
 
@@ -142,11 +145,16 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  /* background-color: #195514; */
+  color: black;
+  background-color: #2421b8;
   margin-top: 30px;
+
+  border-top-width: 150px;
+  border-color: rgb(0, 0, 0);
 }
 #app > * {
   padding: 50px;
+  border: 4px rgba(168, 167, 214, 0.589) solid;
+  border-radius: 15px;
 }
 </style>
