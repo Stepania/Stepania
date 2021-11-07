@@ -28,6 +28,18 @@
           @click="$emit('give-change', $event)"
         />
 
+        <div id="money-taker">
+          <img
+            src="./images/hand.jpg"
+            @drop="this.drop($event)"
+            @dragover="this.dragover($event)"
+            @dragenter="this.dragenter($event)"
+            alt="CoinTaker"
+            width="115"
+            height="110"
+          />
+        </div>
+
         <div id="coins-drag">
           <span id="two-dollar">
             <img
@@ -79,25 +91,18 @@
           </span>
         </div>
       </div>
-      <div class="coin-exchange">
-        <div id="money-taker">
-          <img
-            src="./images/TrimmedSlot.jpg"
-            @drop="this.drop($event)"
-            @dragover="this.dragover($event)"
-            @dragenter="this.dragenter($event)"
-            alt="CoinTaker"
-            width="122"
-            height="119"
-          />
-        </div>
+    </div>
 
+    <div class="wallet">
+      <h2>Your wallet</h2>
+
+      <div class="coin-exchange">
         <!-- coins ands -->
         <section id="Coin">
           <output id="outputCoin" v-if="coins.length > 0">
             <ul>
               <li v-for="coin in coins" :key="coin.value">
-                Your balance is {{ coin.quantity * 10 }} cents
+                Balance is {{ coin.quantity * 10 }} cents
               </li>
             </ul>
           </output>
@@ -155,12 +160,13 @@ export default {
 }
 .keys {
   width: 95px;
-  height: 50px;
+  height: 80px;
   padding: 5px;
   margin: 0 5px 5px 0;
   background-color: #333;
   color: #fff;
   border: none;
+  border-radius: 0.4em;
 }
 .keys:hover {
   background: red;
@@ -169,9 +175,26 @@ export default {
 .selector {
   position: relative;
 }
+.wallet {
+  width: 130px;
+  height: 130px;
+  padding: 0px 5px 0px 5px;
+  margin: 5px;
+  position: absolute;
+  bottom: 80px;
+  right: 210px;
+  border: 5px black solid;
+  border-width: 5px;
+  background-color: coral;
+  border-radius: 0.4em;
+}
 
 h3 {
   margin: 40px 0 0;
+}
+h2 {
+  margin: 10px 0 0;
+  /* text-align: top; */
 }
 ul {
   list-style-type: none;
@@ -209,13 +232,18 @@ a {
   height: 120px;
   margin-left: 7%;
   position: absolute;
-  left: 6px;
+  top: 3px;
+  right: 100px;
 }
 #Coin {
-  position: absolute;
-  top: 350px;
-  left: 0px;
-  font-size: 20px;
+  width: 130px;
+  position: static;
+  bottom: 45px;
+  text-align: center;
+  left: 240px;
+  line-height: 1.6;
+  font-size: 18px;
+  font-weight: bold;
 }
 #coins-drag {
   height: 200px;

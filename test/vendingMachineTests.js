@@ -31,4 +31,15 @@ describe("Vending machine instance", () => {
     // assert
     assert.equal(cola?.quantity, 2);
   });
+
+  it("addProduct() should add product.", () => {
+    // arrange
+    let vm = new VendingMachine();
+
+    // act
+    vm.addProduct("cola", 10, 3);
+    let cola = vm.findProduct("cola", 10);
+    // assert
+    assert.equal(cola?.quantity, 3);
+  });
 });

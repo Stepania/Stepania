@@ -61,9 +61,12 @@ export default class VendingMachine {
   }
 
   addProduct(name, price, quantity = 1) {
-    if (quantity < 0) {
+    if (quantity < 0)
       throw `VendingMachine.addProduct does not allow negative quantity. Entered: ${quantity}.`;
-    }
+    if (isNaN(price)) throw "The price is not a number.";
+    if (price <= 0) throw "Insert proper price value.";
+    if (name === null || name === "") throw "Insert proper name value.";
+
     let product = this.findProduct(name, price);
     if (product === undefined) {
       let newProduct = new ProductRecord(name, price, quantity);

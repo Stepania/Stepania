@@ -37,22 +37,17 @@ export default {
       if (this.vendingMachine.allMyProducts.length > 5) {
         return alert("Max products allowed is 6");
       }
-      if (price <= 0) {
-        return alert("Insert proper value");
-      }
-      if (price === null) {
-        return alert("Insert proper value");
-      }
-      if (price == "") {
-        return alert("Insert proper value");
-      }
-      if (name === null) {
-        return alert("Insert proper value");
+      if (price % 10 > 0) {
+        return alert("Price must be multiple of ten");
       }
       if (name.length > 8) {
         return alert("Could you shorten the name please");
       }
-      this.vendingMachine.addProduct(name, Number(price));
+      try {
+        this.vendingMachine.addProduct(name, Number(price));
+      } catch (ex) {
+        return alert(ex);
+      }
     },
 
     addCoin: function(event, storage, value, quantity) {

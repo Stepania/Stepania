@@ -32,12 +32,4 @@ describe("VM product instance ", () => {
     // assert
     assert.equal(product.price, 150);
   });
-
-  it("should save price correctly.", () => {
-    // arrange
-    var product = new ProductRecord("coca", 150, 1);
-    // act
-    // assert
-    assert.equal(product.price, 200);
-  });
 });
